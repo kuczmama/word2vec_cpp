@@ -28,6 +28,25 @@ void Word2Vec::create_vectors() {
     }
 }
 
+std::string Word2Vec::most_similar(const std::string& reference_word) {
+    double max_cosine_similarity = -1.0; // Start with the lowest possible similarity
+    std::string most_similar_word;
+    const Vector& reference_vector = vectors[reference_word]; // Get the vector for the reference word
+
+    for (const auto& pair : vectors) {
+        if (pair.first == reference_word) {
+            continue; // Skip the reference word
+        }
+        double cosine_sim = reference_vector.cosine_similarity(pair.second);
+        if (cosine_sim > max_cosine_similarity) {
+            max_cosine_similarity = cosine_sim;
+            most_similar_word = pair.first;
+        }
+    }
+    return most_similar_word;
+}
+
+
 void Word2Vec::save_vectors() {
     std::ofstream out("vectors.json");
     if (vectors.empty()) {

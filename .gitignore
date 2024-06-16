@@ -1,24 +1,20 @@
-# Ignore compiled binary
+# Compiled object files
+*.o
+*.so
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled binary executables
 /bin/
 
-# Ignore object files
+# Object files
 /obj/
 
-# Ignore generated vector data
-*.json
-
-# Ignore any log or temporary files that might be generated
-*.log
-*.tmp
-*.temp
-
-# MacOS specific files to ignore
-.DS_Store
-
-# Ignore editor settings and backup files
+# Backup files
 *~
-.vscode/
-.idea/
 
-# Ignore build files
-Makefile.out
+# Other files that should not be committed
+.DS_Store
+*.swp

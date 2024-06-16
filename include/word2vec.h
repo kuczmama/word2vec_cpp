@@ -22,6 +22,7 @@ public:
     void create_vectors();
     void save_vectors();
     bool load_vectors();
+    std::string most_similar(const std::string& reference_word);
     void train();
     void process_line(const std::string& line, int line_number, int epoch);
     void update_vectors(const std::string& target, const std::string& context);

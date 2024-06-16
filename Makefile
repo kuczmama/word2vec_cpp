@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Iinclude
-LDFLAGS = 
+LDFLAGS =
 
 # Directory for compiled binaries
 BIN = bin/
@@ -11,16 +11,25 @@ INCLUDE = include/
 # Object files directory
 OBJ = obj/
 
-TARGET = $(BIN)word2vec_app
+# Targets for training and inference
+TRAIN_TARGET = $(BIN)train_word2vec
+INFERENCE_TARGET = $(BIN)inference_word2vec
 
-SOURCES = $(wildcard $(SRC)*.cpp)
-OBJECTS = $(SOURCES:$(SRC)%.cpp=$(OBJ)%.o)
+# Object files for each program
+TRAIN_OBJECTS = $(OBJ)train_main.o $(OBJ)word2vec.o $(OBJ)vector.o
+INFERENCE_OBJECTS = $(OBJ)inference_main.o $(OBJ)word2vec.o $(OBJ)vector.o
 
-all: directories $(TARGET)
+all: directories $(TRAIN_TARGET) $(INFERENCE_TARGET)
 
-$(TARGET): $(OBJECTS)
+# Training binary
+$(TRAIN_TARGET): $(TRAIN_OBJECTS)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
+# Inference binary
+$(INFERENCE_TARGET): $(INFERENCE_OBJECTS)
+	$(CXX) $(LDFLAGS) $^ -o $@
+
+# General rule for object files
 $(OBJ)%.o: $(SRC)%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -29,6 +38,7 @@ directories:
 	mkdir -p $(OBJ)
 
 clean:
-	rm -f $(BIN)* $(OBJ)*
+	rm -f $(BIN)*
+	rm -f $(OBJ)*
 
 rebuild: clean all

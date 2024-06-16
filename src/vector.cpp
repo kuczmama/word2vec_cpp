@@ -4,11 +4,11 @@
 #include <algorithm>
 #include <numeric>
 
-Vector::Vector(int size, const std::vector<double>& initial_data) {
-    if (!initial_data.empty()) {
-        data = initial_data;
-    } else {
-        data.resize(size);
+Vector::Vector() : data() {}
+
+Vector::Vector(int size, const std::vector<double>& initial_data)
+    : data(initial_data.empty() ? std::vector<double>(size) : initial_data) {
+    if (initial_data.empty()) {
         std::generate(data.begin(), data.end(), []() { return (rand() / (double)RAND_MAX) - 0.5; });
     }
 }
@@ -23,10 +23,12 @@ const double& Vector::operator[](size_t index) const {
     return data[index];
 }
 
+size_t Vector::size() const {
+    return data.size();
+}
+
 double Vector::dot(const Vector& other) const {
-    if (data.size() != other.data.size()) {
-        throw std::invalid_argument("Vectors must have the same length");
-    }
+    if (data.size() != other.data.size()) throw std::invalid_argument("Vectors must have the same length");
     return std::inner_product(data.begin(), data.end(), other.data.begin(), 0.0);
 }
 
