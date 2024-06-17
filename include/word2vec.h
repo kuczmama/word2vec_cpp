@@ -9,6 +9,8 @@
 class Word2Vec {
 private:
     std::string corpus_path;
+    std::string base_name; // To store the base name of the corpus
+    std::string vector_file_name; // To store the resulting vector file name
     int window_size;
     int vector_size;
     double learning_rate;
@@ -17,11 +19,12 @@ private:
     std::unordered_map<std::string, Vector> vectors;
 
 public:
+    Word2Vec(); // Default constructor
     Word2Vec(const std::string& path, int window = 2, int vec_size = 100, double lr = 0.025, int ep = 10);
     void build_vocab();
     void create_vectors();
     void save_vectors();
-    bool load_vectors();
+    bool load_vectors(const std::string& path);
     std::string most_similar(const std::string& reference_word);
     void train();
     void process_line(const std::string& line, int line_number, int epoch);

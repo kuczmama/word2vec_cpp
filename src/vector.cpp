@@ -6,10 +6,16 @@
 
 Vector::Vector() : data() {}
 
-Vector::Vector(int size, const std::vector<double>& initial_data)
-    : data(initial_data.empty() ? std::vector<double>(size) : initial_data) {
+Vector::Vector(int size, const std::vector<double>& initial_data) {
     if (initial_data.empty()) {
-        std::generate(data.begin(), data.end(), []() { return (rand() / (double)RAND_MAX) - 0.5; });
+        data.resize(size);
+        std::generate(data.begin(), data.end(), []() {
+            double value = (rand() / (double)RAND_MAX) - 0.5;
+            // Ensure that value is never exactly zero
+            return value == 0.0 ? 0.1 : value;
+        });
+    } else {
+        data = initial_data;
     }
 }
 
@@ -28,7 +34,6 @@ size_t Vector::size() const {
 }
 
 double Vector::dot(const Vector& other) const {
-    if (data.size() != other.data.size()) throw std::invalid_argument("Vectors must have the same length");
     return std::inner_product(data.begin(), data.end(), other.data.begin(), 0.0);
 }
 
@@ -37,9 +42,14 @@ double Vector::norm() const {
 }
 
 double Vector::cosine_similarity(const Vector& other) const {
-    double denom = norm() * other.norm();
-    if (denom == 0) throw std::runtime_error("Norm is zero, division by zero encountered");
-    return dot(other) / denom;
+    double norm_a = norm();
+    double norm_b = other.norm();
+    if (norm_a == 0 || norm_b == 0) {
+        // If either norm is zero, return a default value or handle it appropriately.
+        // Here, we'll return 0.0 to indicate no similarity.
+        return 0.0;
+    }
+    return dot(other) / (norm_a * norm_b);
 }
 
 Vector Vector::operator+(const Vector& other) const {
