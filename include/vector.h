@@ -25,6 +25,8 @@ public:
     Vector operator-(const Vector& other) const;
     Vector operator*(const Vector& other) const;
     Vector operator/(const Vector& other) const;
+    Vector& operator+=(const Vector& other);
+    Vector operator*(double scalar) const;
 
 private:
     Vector binary_operation(const Vector& other, std::function<double(double, double)> op) const;

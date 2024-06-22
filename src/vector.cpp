@@ -64,6 +64,14 @@ Vector Vector::operator*(const Vector& other) const {
     return binary_operation(other, std::multiplies<double>());
 }
 
+Vector Vector::operator*(double scalar) const {
+    std::vector<double> result_data(data.size());
+    for (size_t i = 0; i < data.size(); ++i) {
+        result_data[i] = data[i] * scalar;
+    }
+    return Vector(data.size(), result_data);
+}
+
 Vector Vector::operator/(const Vector& other) const {
     return binary_operation(other, std::divides<double>());
 }
@@ -75,4 +83,14 @@ Vector Vector::binary_operation(const Vector& other, std::function<double(double
     std::vector<double> result_data(data.size());
     std::transform(data.begin(), data.end(), other.data.begin(), result_data.begin(), op);
     return Vector(data.size(), result_data);
+}
+
+Vector& Vector::operator+=(const Vector& other) {
+    if (data.size() != other.data.size()) {
+        throw std::invalid_argument("Vectors must have the same length");
+    }
+    for (size_t i = 0; i < data.size(); ++i) {
+        data[i] += other.data[i];
+    }
+    return *this;
 }

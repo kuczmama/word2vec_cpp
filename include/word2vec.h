@@ -17,6 +17,11 @@ private:
     int epochs;
     std::unordered_set<std::string> vocab;
     std::unordered_map<std::string, Vector> vectors;
+    double sigmoid(double x);
+    void negative_sampling(
+            const std::string& target,
+            const std::string& context,
+            int num_negative);
 
 public:
     Word2Vec(); // Default constructor

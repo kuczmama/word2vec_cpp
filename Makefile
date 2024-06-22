@@ -1,6 +1,6 @@
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Iinclude
-LDFLAGS =
+CXX = g++-14
+CXXFLAGS = -std=c++17 -Wall -Iinclude
+LDFLAGS = -lstdc++fs
 
 # Directory for compiled binaries
 BIN = bin/
@@ -23,11 +23,11 @@ all: directories $(TRAIN_TARGET) $(INFERENCE_TARGET)
 
 # Training binary
 $(TRAIN_TARGET): $(TRAIN_OBJECTS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
 # Inference binary
 $(INFERENCE_TARGET): $(INFERENCE_OBJECTS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
 # General rule for object files
 $(OBJ)%.o: $(SRC)%.cpp
@@ -42,3 +42,5 @@ clean:
 	rm -f $(OBJ)*
 
 rebuild: clean all
+
+.PHONY: all directories clean rebuild
